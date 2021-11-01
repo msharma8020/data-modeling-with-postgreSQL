@@ -3,3 +3,8 @@ data/
 
 # Ignore virtual environment directory
 env/ 
+
+# Ignore unwanted file and directory 
+__pycache__/
+tempCodeRunnerFile.py
+.ipynb_checkpoints 
