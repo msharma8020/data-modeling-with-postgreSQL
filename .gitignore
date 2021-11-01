@@ -1,2 +1,5 @@
 # Ignore the data directory 
 data/ 
+
+# Ignore virtual environment directory
+env/ 
