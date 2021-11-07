@@ -24,7 +24,7 @@ songplay_table_create = ("""
 
 user_table_create = ("""
     CREATE TABLE IF NOT EXISTS users(
-        user_id INT DEFAULT NULL,
+        user_id NUMERIC PRIMARY KEY,
         first_name VARCHAR(50) NOT NULL,
         last_name VARCHAR(50) NOT NULL,
         gender CHAR DEFAULT NULL, 
@@ -54,13 +54,13 @@ artist_table_create = ("""
 
 time_table_create = ("""
     CREATE TABLE IF NOT EXISTS time(
-        start_time VARCHAR(50) NOT NULL,
+        start_time TIME NOT NULL,
         hour NUMERIC NOT NULL,
-        day VARCHAR(20) NOT NULL,
+        day NUMERIC NOT NULL,
         week NUMERIC NOT NULL,
-        month VARCHAR(20) NOT NULL,
+        month NUMERIC NOT NULL,
         year NUMERIC NOT NULL,
-        weekday VARCHAR(20) NOT NULL
+        weekday NUMERIC NOT NULL
     );
 """)
 
@@ -115,8 +115,8 @@ artist_table_insert = ("""
 """)
 
 time_table_insert = ("""
-    INSERT INTO time(start_time, hour, day, week, month, weekday)
-    VALUES(%s, %s, %s, %s, %s);
+    INSERT INTO time(start_time, hour, day, week, month, year, weekday)
+    VALUES(%s, %s, %s, %s, %s, %s, %s);
 """)
 
 # FIND SONGS
