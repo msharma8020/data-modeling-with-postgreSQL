@@ -34,9 +34,9 @@ user_table_create = ("""
 
 song_table_create = ("""
     CREATE TABLE IF NOT EXISTS songs(
-        song_id VARCHAR(50) NOT NULL PRIMARY KEY,
-        title VARCHAR(50) NOT NULL,
-        artist_id VARCHAR(50) NOT NULL UNIQUE,  
+        song_id VARCHAR(120) NOT NULL PRIMARY KEY,
+        title VARCHAR(120) NOT NULL,
+        artist_id VARCHAR(120) NOT NULL,  
         year NUMERIC NOT NULL DEFAULT 0, 
         duration NUMERIC NOT NULL  
     );
@@ -44,11 +44,11 @@ song_table_create = ("""
 
 artist_table_create = ("""
     CREATE TABLE IF NOT EXISTS artists (
-        artist_id VARCHAR(50) PRIMARY KEY,
-        artist_name VARCHAR(50) NOT NULL, 
+        artist_id VARCHAR(120) PRIMARY KEY,
+        artist_name VARCHAR(120) NOT NULL, 
         artist_latitude NUMERIC,
         artist_longitude NUMERIC, 
-        artist_location VARCHAR(50)
+        artist_location VARCHAR(120)
     );
 """)
 
@@ -67,8 +67,8 @@ time_table_create = ("""
 # INSERT RECORDS
 
 songplay_table_insert = ("""
-    INSERT INTO songplays(songplay_id, start_time, user_id, level, song_id, artist_id, session_id, location, user_agent)
-    VALUES(%s, %s, %s, %s, %s, %s, %s, %s, %s)
+    INSERT INTO songplays(start_time, user_id, level, song_id, artist_id, session_id, location, user_agent)
+    VALUES(%s, %s, %s, %s, %s, %s, %s, %s)
     ON CONFLICT (songplay_id)
     DO UPDATE 
     SET start_time = EXCLUDED.start_time,
@@ -97,7 +97,8 @@ song_table_insert = ("""
     VALUES(%s, %s, %s, %s, %s)
     ON CONFLICT (song_id)
     DO UPDATE
-    SET title = EXCLUDED.title,
+    SET song_id = EXCLUDED.song_id, 
+        title = EXCLUDED.title,
         artist_id = EXCLUDED.artist_id,
         year = EXCLUDED.year,
         duration = EXCLUDED.duration;
@@ -108,7 +109,8 @@ artist_table_insert = ("""
     VALUES(%s, %s, %s, %s, %s)
     ON CONFLICT (artist_id)
     DO UPDATE
-    SET artist_name = EXCLUDED.artist_name,
+    SET artist_id = EXCLUDED.artist_id,
+        artist_name = EXCLUDED.artist_name,
         artist_latitude = EXCLUDED.artist_latitude,
         artist_longitude = EXCLUDED.artist_longitude,
         artist_location = EXCLUDED.artist_location;
@@ -122,6 +124,9 @@ time_table_insert = ("""
 # FIND SONGS
 
 song_select = ("""
+    SELECT songs.song_id, artists.artist_id FROM songs 
+    JOIN artists 
+    ON songs.artist_id = artists.artist_id;
 """)
 
 # QUERY LISTS
