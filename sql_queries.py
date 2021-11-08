@@ -11,13 +11,13 @@ time_table_drop = "DROP TABLE IF EXISTS time"
 songplay_table_create = ("""
     CREATE TABLE IF NOT EXISTS songplays(
         songplay_id SERIAL PRIMARY KEY,
-        start_time VARCHAR(20) NOT NULL,
+        start_time VARCHAR(120) NOT NULL,
         user_id INT DEFAULT NULL, 
         level VARCHAR(4),
-        song_id VARCHAR(50) NOT NULL,
-        artist_id VARCHAR(50) NOT NULL, 
+        song_id VARCHAR(120),
+        artist_id VARCHAR(120), 
         session_id NUMERIC NOT NULL, 
-        location VARCHAR(50) NOT NULL,
+        location VARCHAR(120) NOT NULL,
         user_agent TEXT NOT NULL
     );
 """)
@@ -45,7 +45,7 @@ song_table_create = ("""
 artist_table_create = ("""
     CREATE TABLE IF NOT EXISTS artists (
         artist_id VARCHAR(120) PRIMARY KEY,
-        artist_name VARCHAR(120) NOT NULL, 
+        artist_name VARCHAR(120) DEFAULT NULL, 
         artist_latitude NUMERIC,
         artist_longitude NUMERIC, 
         artist_location VARCHAR(120)
@@ -124,9 +124,13 @@ time_table_insert = ("""
 # FIND SONGS
 
 song_select = ("""
-    SELECT songs.song_id, artists.artist_id FROM songs 
+    SELECT songs.song_id, artists.artist_id 
+    FROM songs 
     JOIN artists 
-    ON songs.artist_id = artists.artist_id;
+    ON songs.artist_id = artists.artist_id
+    WHERE songs.title = %s 
+    AND artists.artist_name = %s             
+    AND songs.duration = %s
 """)
 
 # QUERY LISTS
